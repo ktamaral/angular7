@@ -1,0 +1,20 @@
+### Generate a new Angular workspace ###
+# Instructions on how to use this generator
+# Build image
+# `docker build -f DockerfileClientGen -t practice-angular7 .`
+# Run container, mount pwd as a volume, and start interactive session
+# `docker run -it -v $(pwd):/usr/src/app practice-angular7 sh`
+# In the container generate new Angular workspace
+# `ng new practice-angular7`
+# A new workspace will be generated and mouted as a volume to local host filesystem
+# Purpose of this image is to generate all project files for a brand new workspace only
+
+# Base image
+FROM node:10-alpine
+
+# Set working directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Install Angular CLI
+RUN npm install -g @angular/cli
