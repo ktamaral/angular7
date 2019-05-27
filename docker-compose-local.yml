@@ -9,7 +9,7 @@ services:
     container_name: practice-angular7
     build:
       context: ./practice-angular7
-      dockerfile: DockerfileClientDev
+      dockerfile: DockerfileClientLocal
     volumes:
       - './practice-angular7/:/usr/src/app'
       - '/usr/src/app/node_modules'
