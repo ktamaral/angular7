@@ -1,0 +1,17 @@
+# Build all images and run all containers
+# `docker-compose -f docker-compose-local.yml up --build`
+
+version: '3.5'
+
+services:
+
+  practice-angular7:
+    container_name: practice-angular7
+    build:
+      context: ./practice-angular7
+      dockerfile: DockerfileClientDev
+    volumes:
+      - './practice-angular7/:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '4200:4200'
