@@ -22,8 +22,10 @@ export class TableHttpComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { }) paginator: MatPaginator;
+  //@ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { }) sort: MatSort;
+  //@ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(private _httpClient: HttpClient) { }
 
@@ -76,6 +78,7 @@ export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) { }
 
   getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
+
     const href = 'https://api.github.com/search/issues';
     const requestUrl =
       `${href}?q=repo:angular/components&sort=${sort}&order=${order}&page=${page + 1}`;

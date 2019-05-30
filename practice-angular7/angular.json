@@ -62,7 +62,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "practice-angular7:build"
+            "browserTarget": "practice-angular7:build",
+            "port": 1337
           },
           "configurations": {
             "production": {
