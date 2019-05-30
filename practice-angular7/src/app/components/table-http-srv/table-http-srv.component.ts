@@ -72,8 +72,8 @@ export class TableHttpSrvComponent implements AfterViewInit {
 }
 
 export interface AcornAPI {
-  items: AcornItem[];
-  total_count: number;
+  page: AcornItem[];
+  totalcount: number;
 }
 
 export interface AcornItem {
