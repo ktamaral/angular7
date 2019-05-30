@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { TableComponent } from './components/table/table.component';
 import { TableHttpComponent } from './components/table-http/table-http.component';
+import { TableHttpSrvComponent } from './components/table-http-srv/table-http-srv.component';
 
 @NgModule({
   // Components, directives, and pipes that belong to this module
@@ -19,7 +20,8 @@ import { TableHttpComponent } from './components/table-http/table-http.component
     AppComponent,
     MenuComponent,
     TableComponent,
-    TableHttpComponent
+    TableHttpComponent,
+    TableHttpSrvComponent
   ],
   // @NgModule references only
   imports: [
