@@ -40,6 +40,5 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-
-  <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>

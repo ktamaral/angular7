@@ -13,12 +13,15 @@ import { TableComponent } from './components/table/table.component';
 import { TableHttpComponent } from './components/table-http/table-http.component';
 
 @NgModule({
+  // Components, directives, and pipes that belong to this module
+  // A declarable can only belong to one module
   declarations: [
     AppComponent,
     MenuComponent,
     TableComponent,
     TableHttpComponent
   ],
+  // @NgModule references only
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +30,7 @@ import { TableHttpComponent } from './components/table-http/table-http.component
     //HttpModule,
     HttpClientModule
   ],
+  // Services
   providers: [],
   bootstrap: [AppComponent]
 })
