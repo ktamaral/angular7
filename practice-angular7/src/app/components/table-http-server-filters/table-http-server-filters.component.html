@@ -1,0 +1,119 @@
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade" *ngIf="isLoadingResults || isLoadingError">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isLoadingError">
+      Error: Unable to get data from the server.
+    </div>
+  </div>
+
+  <div class="example-table-container">
+
+    <table mat-table [dataSource]="data" class="example-table" matSort>
+      <!-- ItemID Column -->
+      <ng-container matColumnDef="ItemID">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>ItemID</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input
+              matInput
+              placeholder="Search ItemID"
+              #input
+              [(ngModel)]="searchValues.ItemID"
+              (ngModelChange)="onFieldChange($event, input)"
+            >
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.ItemID}}</td>
+      </ng-container>
+
+      <!-- IdentificationID Column -->
+      <ng-container matColumnDef="IdentificationID">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>IdentificationID</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input
+              matInput
+              placeholder="Search IdentificationID"
+              #input
+              [(ngModel)]="searchValues.IdentificationID"
+            >
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.IdentificationID}}</td>
+      </ng-container>
+
+      <!-- CoordinatorID Column -->
+      <ng-container matColumnDef="CoordinatorID">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>CoordinatorID</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input matInput placeholder="Search CoordinatorID" #input [(ngModel)]="searchValues.CoordinatorID">
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.CoordinatorID}}</td>
+      </ng-container>
+
+      <!-- IsNonCollectionMaterial Column -->
+      <ng-container matColumnDef="IsNonCollectionMaterial">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>IsNonCollectionMaterial</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input matInput placeholder="Search IsNonCollectionMaterial" #input [(ngModel)]="searchValues.IsNonCollectionMaterial">
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.IsNonCollectionMaterial}}</td>
+      </ng-container>
+
+      <!-- AuthorArtist Column -->
+      <ng-container matColumnDef="AuthorArtist">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>AuthorArtist</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input matInput placeholder="Search AuthorArtist" #input
+              [(ngModel)]="searchValues.AuthorArtist">
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.AuthorArtist}}</td>
+      </ng-container>
+
+      <!-- DateOfObject Column -->
+      <ng-container matColumnDef="DateOfObject">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>DateOfObject</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input matInput placeholder="Search DateOfObject" #input [(ngModel)]="searchValues.DateOfObject">
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.DateOfObject}}</td>
+      </ng-container>
+
+      <!-- CollectionName Column -->
+      <ng-container matColumnDef="CollectionName">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>CollectionName</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input matInput placeholder="Search CollectionName" #input [(ngModel)]="searchValues.CollectionName">
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.CollectionName}}</td>
+      </ng-container>
+
+      <!-- Storage Column -->
+      <ng-container matColumnDef="Storage">
+        <th class="header" mat-header-cell *matHeaderCellDef>
+          <div mat-sort-header>Storage</div>
+          <mat-form-field class="filter" floatLabel="never">
+            <input matInput placeholder="Search Storage" #input [(ngModel)]="searchValues.Storage">
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.Storage}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!--</mat-table>-->
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

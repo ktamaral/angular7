@@ -1,15 +1,7 @@
 import { NgModule } from '@angular/core';
-import { A11yModule } from '@angular/cdk/a11y';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PortalModule } from '@angular/cdk/portal';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { CdkStepperModule } from '@angular/cdk/stepper';
-import { CdkTableModule } from '@angular/cdk/table';
-import { CdkTreeModule } from '@angular/cdk/tree';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
-  MatBadgeModule,
-  MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -17,7 +9,6 @@ import {
   MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
-  MatDividerModule,
   MatExpansionModule,
   MatGridListModule,
   MatIconModule,
@@ -36,24 +27,21 @@ import {
   MatSlideToggleModule,
   MatSnackBarModule,
   MatSortModule,
-  MatStepperModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatTreeModule,
+  MatStepperModule,
 } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   exports: [
-    A11yModule,
-    CdkStepperModule,
     CdkTableModule,
-    CdkTreeModule,
-    DragDropModule,
+    BrowserAnimationsModule,
     MatAutocompleteModule,
-    MatBadgeModule,
-    MatBottomSheetModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -62,7 +50,6 @@ import {
     MatStepperModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatDividerModule,
     MatExpansionModule,
     MatGridListModule,
     MatIconModule,
@@ -85,9 +72,8 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
-    PortalModule,
-    ScrollingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class MaterialModule { }

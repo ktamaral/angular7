@@ -13,6 +13,8 @@ import { TableComponent } from './components/table/table.component';
 import { TableHttpComponent } from './components/table-http/table-http.component';
 import { TableHttpSrvComponent } from './components/table-http-srv/table-http-srv.component';
 import { TableHttpServerComponent } from './components/table-http-server/table-http-server.component';
+import { TableFiltersComponent } from './components/table-filters/table-filters.component';
+import { TableHttpServerFiltersComponent } from './components/table-http-server-filters/table-http-server-filters.component';
 
 @NgModule({
   // Components, directives, and pipes that belong to this module
@@ -23,7 +25,9 @@ import { TableHttpServerComponent } from './components/table-http-server/table-h
     TableComponent,
     TableHttpComponent,
     TableHttpSrvComponent,
-    TableHttpServerComponent
+    TableHttpServerComponent,
+    TableFiltersComponent,
+    TableHttpServerFiltersComponent
   ],
   // @NgModule references only
   imports: [
