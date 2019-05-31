@@ -44,7 +44,7 @@ export class TableHttpServerComponent implements AfterViewInit {
 
     // If sort order changes reset back to first page
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    console.log(`${this.sort}`);
+    console.log(`${this.paginator.pageSize}`);
     // Merge multiple observables into a single observable
     merge(this.sort.sortChange, this.paginator.page)
       // Combine multiple functions calling each with the output of the previous
@@ -54,15 +54,15 @@ export class TableHttpServerComponent implements AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.exampleDatabase!.getAcornItems(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex);
+            this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
         }),
         // Apply a projection to each value and emit projection in output observable
         map(data => {
           this.isLoadingResults = false;
           this.isLoadingError = false;
-          this.resultsLength = data.totalcount;
+          this.resultsLength = data.totalCount;
 
-          return data.page;
+          return data.items;
         }),
         catchError(() => {
           this.isLoadingResults = false;
@@ -74,8 +74,8 @@ export class TableHttpServerComponent implements AfterViewInit {
 }
 
 export interface AcornAPI {
-  page: AcornItem[];
-  totalcount: number;
+  items: AcornItem[];
+  totalCount: number;
 }
 
 export interface AcornItem {
@@ -93,32 +93,21 @@ export interface AcornItem {
 export class ExampleHttpServerDatabase {
   constructor(private _httpClient: HttpClient) { }
 
-  /*getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
-    const href = 'https://api.github.com/search/issues';
-    const requestUrl =
-      `${href}?q=repo:angular/components&sort=${sort}&order=${order}&page=${page + 1}`;
-
-    return this._httpClient.get<GithubApi>(requestUrl);
-  }*/
-
-
   getAcornItems(
     sort: string,
     order: string,
-    page: number
+    page: number,
+    pageSize: number
   ): Observable<AcornAPI> {
 
     // http://localhost:3000/items?CoordinatorID=2&filter=bach&filterBy=AuthorArtist&sortBy=AuthorArtist&sortOrder=asc&pageSize=1000
 
     const baseUrl = `http://localhost:3000/`;
     const routeEndpoint = `items`;
-    const queryParams = `?sortBy=${sort}&sortOrder=${order}`;
-    //  `?q=repo:angular/components&sort=${sort}&order=${order}&page=${page + 1}`;
+    const queryParams = `?sortBy=${sort}&sortOrder=${order}&pageNumber=${page}&pageSize=${pageSize}`;
     const requestUrl = `${baseUrl}${routeEndpoint}${queryParams}`;
-    /*const requestUrl =
-      `${href}?q=repo:angular/components&sort=${sort}&order=${order}&page=${page + 1}`;*/
 
-    console.log(`QUERY PARAMS: ${sort} ${order} ${page}`);
+    console.log(`QUERY PARAMS: ${sort} ${order} ${page} ${pageSize}`);
     console.log(`requestUrl: ${requestUrl}`);
     return this._httpClient.get<AcornAPI>(requestUrl);
   }
