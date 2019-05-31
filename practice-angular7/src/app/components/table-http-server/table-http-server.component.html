@@ -1,0 +1,78 @@
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade" *ngIf="isLoadingResults || isLoadingError">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isLoadingError">
+      Error: Unable to get data from the server.
+    </div>
+  </div>
+
+  <div class="example-table-container">
+
+    <table mat-table [dataSource]="data" class="example-table" matSort>
+      <!--<mat-table [dataSource]="data" matSort>-->
+      <!-- ItemID Column -->
+      <ng-container matColumnDef="ItemID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+        <td mat-cell *matCellDef="let row">{{row.ItemID}}</td>
+      </ng-container>
+
+      <!-- IdentificationID Column -->
+      <ng-container matColumnDef="IdentificationID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>IdentificationID</th>
+        <td mat-cell *matCellDef="let row">{{row.IdentificationID}}</td>
+      </ng-container>
+
+      <!-- CoordinatorID Column -->
+      <ng-container matColumnDef="CoordinatorID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CoordinatorID</th>
+        <td mat-cell *matCellDef="let row">{{row.CoordinatorID}}</td>
+      </ng-container>
+
+      <!-- IsNonCollectionMaterial Column -->
+      <ng-container matColumnDef="IsNonCollectionMaterial">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          IsNonCollectionMaterial
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.IsNonCollectionMaterial}}</td>
+      </ng-container>
+
+      <!-- AuthorArtist Column -->
+      <ng-container matColumnDef="AuthorArtist">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          AuthorArtist
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.AuthorArtist}}</td>
+      </ng-container>
+
+      <!-- DateOfObject Column -->
+      <ng-container matColumnDef="DateOfObject">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          DateOfObject
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.DateOfObject}}</td>
+      </ng-container>
+
+      <!-- CollectionName Column -->
+      <ng-container matColumnDef="CollectionName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          CollectionName
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.CollectionName}}</td>
+      </ng-container>
+
+      <!-- Storage Column -->
+      <ng-container matColumnDef="Storage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Storage
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.Storage}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!--</mat-table>-->
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
