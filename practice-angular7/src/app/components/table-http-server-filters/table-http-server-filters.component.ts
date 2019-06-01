@@ -20,6 +20,12 @@ export class TableHttpServerFiltersComponent implements AfterViewInit {
   txtQuery: string; // bind this to input with ngModel
   txtQueryChanged: Subject<string> = new Subject<string>();
 
+  /**
+   * txtQueryChanged(): Observable<string> {
+   *  return this.subject.asObservable();
+   * }
+   */
+
   displayedColumns: string[] = [
     'ItemID',
     'IdentificationID',
@@ -31,12 +37,12 @@ export class TableHttpServerFiltersComponent implements AfterViewInit {
     'Storage'
   ];
 
-  exampleDatabase: ExampleHttpServerDatabase | null;
+  acornHttpApi: AcornHttpApi | null;
   data: AcornItem[] = [];
 
-  resultsLength = 0;
-  isLoadingResults = true;
-  isLoadingError = false;
+  resultsLength: number = 0;
+  isLoadingResults: boolean = true;
+  isLoadingError: boolean = false;
 
   searchCondition: any = {};
   searchValues: any = {};
@@ -44,73 +50,32 @@ export class TableHttpServerFiltersComponent implements AfterViewInit {
   @ViewChild(MatPaginator, {}) paginator: MatPaginator;
   @ViewChild(MatSort, {}) sort: MatSort;
 
-  constructor(private _httpClient: HttpClient) {
-
-    this.txtQueryChanged
-      .pipe(debounceTime(1000), distinctUntilChanged())
-      .subscribe(model => {
-        console.log(`txtQueryChanged: ${model} ${JSON.stringify(this.searchValues)}`);
-        this.txtQuery = model;
-
-        // Call your function which calls API or do anything you would like do after a lag of 1 sec
-        //this.getDataFromAPI(this.txtQuery);
-      });
-
-  }
+  constructor(private _httpClient: HttpClient) { }
 
   onFieldChange(query: string) {
     this.txtQueryChanged.next(query);
   }
 
+  /**
+   * TODO:
+   * https://blog.angular-university.io/angular-debugging/
+   */
+  /*ngOnInit() {
+
+    // load the initial page
+    this.dataSource.loadLessons(...);
+  }*/
+
   ngAfterViewInit() {
-    this.exampleDatabase = new ExampleHttpServerDatabase(this._httpClient);
+    this.acornHttpApi = new AcornHttpApi(this._httpClient);
 
     // If sort order changes reset back to first page
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-    // TODO: bind to relevant input elements only
-    /*fromEvent<KeyboardEvent>(document, 'keyup')
-      .pipe(
-        debounceTime(150),
-        distinctUntilChanged(),
-        tap(() => {
-          console.log(`searchValues 1: ${JSON.stringify(this.searchValues)}`);
-          this.paginator.pageIndex = 0;
-
-          this.exampleDatabase!.getAcornItems(
-            this.sort.active,
-            this.sort.direction,
-            this.paginator.pageIndex,
-            this.paginator.pageSize,
-            this.searchValues
-          );
-        })
-      )
-      .subscribe();*/
-
-    /*fromEvent(this.input.nativeElement, 'keyup')
-      .pipe(
-        debounceTime(150),
-        distinctUntilChanged(),
-        tap(() => {
-
-          this.paginator.pageIndex = 0;
-
-          this.exampleDatabase!.getAcornItems(
-            this.sort.active,
-            this.sort.direction,
-            this.paginator.pageIndex,
-            this.paginator.pageSize,
-            this.searchValues
-            );
-        })
-      )
-      .subscribe();*/
-
-
     // Load a new page on sort or paginate
     // Merge multiple observables into a single observable
-    merge(this.sort.sortChange, this.paginator.page)
+    //merge(this.sort.sortChange, this.paginator.page, this.txtQueryChanged.pipe(debounceTime(100)))
+    merge(this.sort.sortChange, this.paginator.page, this.txtQueryChanged)
       // Combine multiple functions calling each with the output of the previous
       .pipe(
         startWith({}),
@@ -118,7 +83,7 @@ export class TableHttpServerFiltersComponent implements AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
 
-          return this.exampleDatabase!.getAcornItems(
+          return this.acornHttpApi!.getItems(
             this.sort.active,
             this.sort.direction,
             this.paginator.pageIndex,
@@ -131,6 +96,7 @@ export class TableHttpServerFiltersComponent implements AfterViewInit {
           this.isLoadingError = false;
           this.resultsLength = data.totalCount;
 
+          console.log(`sort.direction ${this.sort.direction}`);
           return data.items;
         }),
         catchError(() => {
@@ -159,10 +125,10 @@ export interface AcornItem {
 }
 
 /** An example database that the data source uses to retrieve data for the table. */
-export class ExampleHttpServerDatabase {
+export class AcornHttpApi {
   constructor(private _httpClient: HttpClient) { }
 
-  getAcornItems(
+  getItems(
     sort: string,
     order: string,
     page: number,
@@ -172,10 +138,11 @@ export class ExampleHttpServerDatabase {
 
     // http://localhost:3000/items?CoordinatorID=2&filter=bach&filterBy=AuthorArtist&sortBy=AuthorArtist&sortOrder=asc&pageSize=1000
 
-    const baseUrl: string = `http://localhost:3000/`;
-    const routeEndpoint: string = `items`;
-    //const urlParams: string = `?sortBy=${sort}&sortOrder=${order}&pageNumber=${page}&pageSize=${pageSize}`;
-    const requestUrl: string = `${baseUrl}${routeEndpoint}`;
+    const BASE_URL: string = `http://localhost:3000/`;
+    const ENDPOINT: string = `items`;
+    const PAGINATION: string = `?sort=${sort}&order=${order}&page=${page}&pageSize=${pageSize}`;
+    const SEARCH_QUERY: string = `&q=${JSON.stringify(searchValues)}`;
+    const REQUEST_URL: string = `${BASE_URL}${ENDPOINT}${PAGINATION}${SEARCH_QUERY}`
 
     // Add URL encoded search parameters
     let options: any = {
@@ -183,15 +150,18 @@ export class ExampleHttpServerDatabase {
       .set('sortBy', sort)
       .set('sortOrder', order)
       .set('pageNumber', page.toString())
-      .set('pageSize', pageSize)
+      .set('pageSize', pageSize.toString())
       .set('searchValues', JSON.stringify(searchValues))
     };
 
-    //console.log(`QUERY PARAMS: ${sort} ${order} ${page} ${pageSize} ${searchValues}`);
-    console.log(`searchValues 2: ${JSON.stringify(searchValues)}`);
-    //console.log(`requestUrl: ${requestUrl}`);
-    //return this._httpClient.get<AcornAPI>(requestUrl, queryParams);
-    return this._httpClient.get<AcornAPI>(requestUrl, options);
+    console.log(`QUERY PARAMS: ${sort} ${order} ${page} ${pageSize} ${JSON.stringify(searchValues)}`);
+
+    /**
+     * TODO:
+     * ERROR in src/app/components/table-http-server-filters/table-http-server-filters.component.ts(194,5):
+     * error TS2322: Type 'Observable<HttpEvent<AcornAPI>>' is not assignable to type 'Observable<AcornAPI>'.
+     */
+    return this._httpClient.get<AcornAPI>(REQUEST_URL);
   }
 
 }
